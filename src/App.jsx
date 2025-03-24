@@ -32,7 +32,7 @@ const RoboflowImageDetector = () => {
       try {
         const response = await axios({
           method: "POST",
-          url: "https://detect.roboflow.com/ssc-qazd6-xquu2/3",
+          url: "https://detect.roboflow.com/ssc-qazd6-xquu2/5",
           params: { api_key: "BDl6i58Nj3eKJm5PJsjY", confidence: 20 },
           data: base64Image,
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
