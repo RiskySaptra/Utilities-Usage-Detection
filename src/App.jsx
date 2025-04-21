@@ -21,13 +21,27 @@ const RoboflowImageDetector = () => {
   };
 
   const handleImageUpload = (event) => {
-    if (event.target.files[0]) {
+    const file = event.target.files[0];
+    if (file) {
       setLoading(true);
       const img = new Image();
-      img.src = URL.createObjectURL(event.target.files[0]);
+      img.src = URL.createObjectURL(file);
       img.onload = () => {
         setImage(img);
-        detectImage(event.target.files[0], img);
+        detectImage(file, img);
+      };
+    }
+  };
+
+  const handleCapture = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setLoading(true);
+      const img = new Image();
+      img.src = URL.createObjectURL(file);
+      img.onload = () => {
+        setImage(img);
+        detectImage(file, img);
       };
     }
   };
@@ -108,6 +122,19 @@ const RoboflowImageDetector = () => {
       <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">
         Utilities Usage Detection
       </h1>
+
+      <label className="mb-2 text-lg font-semibold">Take a Photo:</label>
+      <input
+        type="file"
+        accept="image/*"
+        capture="environment" // forces back camera on mobile
+        onChange={handleCapture}
+        className="mb-4"
+      />
+
+      <label className="mb-2 text-lg font-semibold">
+        Or Upload from Gallery:
+      </label>
       <input
         type="file"
         accept="image/*"
