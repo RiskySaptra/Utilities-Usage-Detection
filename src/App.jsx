@@ -22,25 +22,17 @@ const RoboflowImageDetector = () => {
 
   const handleImageUpload = (event) => {
     if (event.target.files[0]) {
-      setLoading(true);
       const img = new Image();
       img.src = URL.createObjectURL(event.target.files[0]);
-
       img.onload = () => {
         setImage(img);
         detectImage(event.target.files[0], img);
-        URL.revokeObjectURL(img.src); // Cleanup after loading
-        setLoading(false); // Stop loading spinner after detection
-      };
-
-      img.onerror = () => {
-        setLoading(false);
-        alert("Failed to load image.");
       };
     }
   };
 
   const detectImage = async (file, imgElement) => {
+    setLoading(true);
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onloadend = async () => {
@@ -125,10 +117,11 @@ const RoboflowImageDetector = () => {
 
       {loading && <Spinner className="text-blue-500 my-4" />}
 
-      {!loading && output.length > 0 && (
+      {!loading && (
         <div className="text-center text-lg font-medium mt-4 text-green-600 p-4 bg-gray-100 rounded-lg shadow-md w-full">
           <p>Result</p>
           <p className="text-gray-900 font-semibold text-xl mt-1">
+            {output.length === 0 && "Nothing Detected"}
             {output
               .sort((a, b) => a.x - b.x)
               .map((itm) => parseClass(itm.class))
@@ -138,7 +131,11 @@ const RoboflowImageDetector = () => {
       )}
 
       {image && (
-        <div className="relative mt-6 border border-gray-300 p-3 bg-white shadow-lg w-full rounded-lg">
+        <div
+          className={`relative mt-6 border border-gray-300 p-3 bg-white shadow-lg w-full rounded-lg ${
+            loading ? "opacity-0" : "opacity-100"
+          }`}
+        >
           <canvas ref={canvasRef} className="w-full h-auto" />
         </div>
       )}
