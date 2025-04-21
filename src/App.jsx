@@ -37,11 +37,16 @@ const RoboflowImageDetector = () => {
     const file = event.target.files[0];
     if (file) {
       setLoading(true);
+      const imageUrl = URL.createObjectURL(file);
+
+      // For preview
+      setImage(imageUrl);
+
+      // For detection
       const img = new Image();
-      img.src = URL.createObjectURL(file);
+      img.src = imageUrl;
       img.onload = () => {
-        setImage(img);
-        detectImage(file, img);
+        detectImage(file, img); // Run detection
       };
     }
   };
