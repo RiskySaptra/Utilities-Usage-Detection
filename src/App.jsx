@@ -111,7 +111,7 @@ const RoboflowImageDetector = () => {
       <input
         type="file"
         accept="image/*"
-        capture="camera" // This will trigger the camera on mobile devices
+        //  capture="camera" // This will trigger the camera on mobile devices
         className="border p-3 rounded-lg mb-6 w-full text-sm text-gray-700"
         onChange={handleImageUpload}
       />
