@@ -41,7 +41,7 @@ const RoboflowImageDetector = () => {
         const response = await axios({
           method: "POST",
           url: "https://detect.roboflow.com/ssc-qazd6-xquu2/6",
-          params: { api_key: "BDl6i58Nj3eKJm5PJsjY", confidence: 20 },
+          params: { api_key: "BDl6i58Nj3eKJm5PJsjY", confidence: 40 },
           data: base64Image,
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
         });
@@ -54,6 +54,18 @@ const RoboflowImageDetector = () => {
         setLoading(false);
       }
     };
+  };
+
+  const parseClass = (itm) => {
+    const mapping = {
+      ".": "9",
+      0: ".",
+    };
+
+    if (mapping[itm]) {
+      return mapping[itm];
+    }
+    return itm - 1;
   };
 
   const drawBoxes = (detections, imgElement) => {
@@ -87,7 +99,7 @@ const RoboflowImageDetector = () => {
 
       // Draw the text
       ctx.fillStyle = "#FFFFFF"; // White text
-      ctx.fillText(text, x + 3, y - 5);
+      ctx.fillText(parseClass(text), x + 3, y - 5);
     });
   };
 
@@ -111,7 +123,7 @@ const RoboflowImageDetector = () => {
           <p className="text-gray-900 font-semibold text-xl mt-1">
             {output
               .sort((a, b) => a.x - b.x)
-              .map((itm) => itm.class)
+              .map((itm) => parseClass(itm.class))
               .join(" ")}
           </p>
         </div>
