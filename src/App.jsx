@@ -39,14 +39,24 @@ const RoboflowImageDetector = () => {
       setLoading(true);
       const imageUrl = URL.createObjectURL(file);
 
-      // For preview
+      // Preview the image
       setImage(imageUrl);
 
-      // For detection
       const img = new Image();
       img.src = imageUrl;
+
       img.onload = () => {
-        detectImage(file, img); // Run detection
+        detectImage(file, img) // Your detection function
+          .finally(() => {
+            setLoading(false);
+            URL.revokeObjectURL(imageUrl); // Clean up the object URL
+          });
+      };
+
+      img.onerror = (error) => {
+        console.error("Error loading image:", error);
+        setLoading(false);
+        URL.revokeObjectURL(imageUrl); // Clean up even if failed
       };
     }
   };
