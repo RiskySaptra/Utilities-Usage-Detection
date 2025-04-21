@@ -25,9 +25,17 @@ const RoboflowImageDetector = () => {
       setLoading(true);
       const img = new Image();
       img.src = URL.createObjectURL(event.target.files[0]);
+
       img.onload = () => {
         setImage(img);
         detectImage(event.target.files[0], img);
+        URL.revokeObjectURL(img.src); // Cleanup after loading
+        setLoading(false); // Stop loading spinner after detection
+      };
+
+      img.onerror = () => {
+        setLoading(false);
+        alert("Failed to load image.");
       };
     }
   };
